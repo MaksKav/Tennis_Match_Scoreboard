@@ -1,24 +1,30 @@
 package com.maxkavun.util;
 
+import com.maxkavun.entity.MatchEntity;
+import com.maxkavun.entity.PlayerEntity;
 import com.maxkavun.exception.HibernateInitializationException;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class HibernateUtil {
     private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
-    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateUtil.class);
 
     private HibernateUtil() {
     }
 
     private static SessionFactory buildSessionFactory() {
         try {
-            LOGGER.info("Building Hibernate SessionFactory");
-            return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+            log.info("Building Hibernate SessionFactory");
+            return new Configuration()
+                    .addAnnotatedClass(PlayerEntity.class)
+                    .addAnnotatedClass(MatchEntity.class)
+                    .configure("hibernate.cfg.xml").buildSessionFactory();
         } catch (Throwable ex) {
-            LOGGER.error("Failed to build Hibernate SessionFactory", ex);
+            log.error("Failed to build Hibernate SessionFactory", ex);
             throw new HibernateInitializationException("Could not initialize Hibernate SessionFactory", ex);
         }
     }
