@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New match</title>
+    <link rel="stylesheet" href="./css/new-match-styles.css">
+</head>
+<body>
+<div class="container">
+    <h2>Creating a new match</h2>
+    <form action="/Tennis_Match_Scoreboard/new-match" method="post">
+        <label for="player1">Player 1:</label>
+        <input type="text" id="player1" name="player1" required>
+
+        <label for="player2">Player 2:</label>
+        <input type="text" id="player2" name="player2" required>
+
+        <button type="submit">Start the match</button>
+    </form>
+</div>
+<script src="js/newMatch.js"></script>
+</body>
+</html>
