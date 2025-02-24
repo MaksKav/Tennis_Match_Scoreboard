@@ -21,6 +21,5 @@ public class ResponseUtil {
         String errorJson = gson.toJson(errorObject);
         response.setStatus(status);
         response.getWriter().write(errorJson);
-        log.error("Error response for {}: {}", status, errorObject);
     }
 }
