@@ -2,9 +2,10 @@ package com.maxkavun.util;
 
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletResponse;
-
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
+@Slf4j
 public class ResponseUtil {
     private static final Gson gson = GsonSingleton.INSTANCE.getGson();
 
@@ -20,5 +21,6 @@ public class ResponseUtil {
         String errorJson = gson.toJson(errorObject);
         response.setStatus(status);
         response.getWriter().write(errorJson);
+        log.error("Error response for {}: {}", status, errorObject);
     }
 }
