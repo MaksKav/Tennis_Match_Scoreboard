@@ -7,12 +7,12 @@ public class PlayerNameValidator {
 
     public boolean isInvalid(String playerName) {
         if (playerName == null || playerName.isBlank()) {
-            return false;
+            return true;
         }
-        return NAME_PATTERN.matcher(playerName).matches();
+        return !NAME_PATTERN.matcher(playerName).matches();
     }
 
-    public boolean areNamesDifferent(String player1Name, String player2Name) {
-        return !player1Name.equals(player2Name);
+    public boolean areNamesSame(String player1Name, String player2Name) {
+        return player1Name.equals(player2Name);
     }
 }
