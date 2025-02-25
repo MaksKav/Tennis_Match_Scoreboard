@@ -45,7 +45,7 @@ public class NewMatchServlet extends HttpServlet {
             return;
         }
 
-        if (playerNameValidator.areNamesDifferent(player1Name, player2Name)) {
+        if (playerNameValidator.areNamesSame(player1Name, player2Name)) {
             log.error("Player 1 and Player 2 are same");
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Players names must be different");
             return;
