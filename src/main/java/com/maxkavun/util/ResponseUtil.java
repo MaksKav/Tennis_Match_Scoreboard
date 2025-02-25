@@ -12,14 +12,9 @@ public class ResponseUtil {
     private ResponseUtil() {
     }
 
-    public static void sendResponse(HttpServletResponse response, int status, String message) throws IOException {
+    public static void sendResponse(HttpServletResponse response, int status, Object message) throws IOException {
+        String json = gson.toJson(message);
         response.setStatus(status);
-        response.getWriter().write(message);
-    }
-
-    public static void sendErrorResponse(HttpServletResponse response, int status, Object errorObject) throws IOException {
-        String errorJson = gson.toJson(errorObject);
-        response.setStatus(status);
-        response.getWriter().write(errorJson);
+        response.getWriter().write(json);
     }
 }
