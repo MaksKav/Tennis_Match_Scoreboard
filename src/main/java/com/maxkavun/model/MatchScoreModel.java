@@ -1,5 +1,8 @@
 package com.maxkavun.model;
 
+import lombok.ToString;
+
+@ToString
 public class MatchScoreModel {
 
     private static final String INITIAL_SCORE = "0";
