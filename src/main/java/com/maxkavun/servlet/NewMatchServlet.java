@@ -1,5 +1,6 @@
 package com.maxkavun.servlet;
 
+import com.maxkavun.dto.MatchIdDto;
 import com.maxkavun.exception.MatchNotFoundException;
 import com.maxkavun.exception.PlayerServiceException;
 import com.maxkavun.service.NewPlayersService;
@@ -24,11 +25,6 @@ public class NewMatchServlet extends HttpServlet {
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
     private final PlayerNameValidator playerNameValidator = new PlayerNameValidator();
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/new-match.html").forward(request, response);
-    }
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String player1Name = request.getParameter("player1");
         String player2Name = request.getParameter("player2");
@@ -51,12 +47,11 @@ public class NewMatchServlet extends HttpServlet {
             return;
         }
         try {
+            UUID matchId = UUID.randomUUID();
             newMatchService.createPlayersIfNotExists(player1Name, player2Name);
-            ongoingMatchesService.createMatch(player1Name, player2Name);
+            ongoingMatchesService.createMatch(matchId , player1Name, player2Name);
 
-            UUID matchId = ongoingMatchesService.getMatchIdByPlayers(player1Name, player2Name);
-            String redirectUrl = "/match-score?uuid=" + matchId.toString();
-            response.sendRedirect(redirectUrl);
+            ResponseUtil.sendResponse(response , HttpServletResponse.SC_OK, new MatchIdDto(matchId));
 
         } catch (PlayerServiceException exception) {
             log.error("Error processing new match request", exception);
