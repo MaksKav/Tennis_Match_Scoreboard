@@ -15,7 +15,7 @@ public class NewPlayersService {
         try {
             createPlayerIfNotExists(player1Name);
             createPlayerIfNotExists(player2Name);
-            log.debug("Players created successfully in service");
+            log.info("Players created successfully in service");
         }catch (PlayerPersistenceException exception){
             throw new PlayerServiceException("Error while creating players: " + player1Name + " and " + player2Name);
         }
