@@ -1,15 +1,13 @@
 package com.maxkavun.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
 @ToString
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 public class MatchModel {
     private final UUID matchId ;
@@ -18,4 +16,5 @@ public class MatchModel {
     private final Long player1Id;
     private final Long player2Id;
     private final MatchScoreModel score = new MatchScoreModel();
+
 }
