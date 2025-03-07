@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ import java.util.UUID;
 @WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
     private final NewPlayersService newMatchService = new NewPlayersService();
-    private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
+    private final OngoingMatchesService ongoingMatchesService = OngoingMatchesService.getInstance();
     private final PlayerNameValidator playerNameValidator = new PlayerNameValidator();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,10 +46,8 @@ public class NewMatchServlet extends HttpServlet {
             return;
         }
         try {
-            UUID matchId = UUID.randomUUID();
             newMatchService.createPlayersIfNotExists(player1Name, player2Name);
-            ongoingMatchesService.createMatch(matchId , player1Name, player2Name);
-
+            UUID matchId = ongoingMatchesService.getOrCreateMatchId(player1Name, player2Name);
             ResponseUtil.sendResponse(response , HttpServletResponse.SC_OK, new MatchIdDto(matchId));
 
         } catch (PlayerServiceException exception) {
@@ -61,4 +58,5 @@ public class NewMatchServlet extends HttpServlet {
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_NOT_FOUND, "Match for players " + player1Name + " and " + player2Name + " not found");
         }
     }
+
 }
