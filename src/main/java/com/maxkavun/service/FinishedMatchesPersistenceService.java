@@ -13,13 +13,8 @@ import java.util.Optional;
 
 @Slf4j
 public class FinishedMatchesPersistenceService {
-    PlayerDao playerDao;
-    MatchDao matchDao;
-
-    public FinishedMatchesPersistenceService(PlayerDao playerDao, MatchDao matchDao) {
-        this.playerDao = playerDao;
-        this.matchDao = matchDao;
-    }
+    PlayerDao playerDao = new PlayerDao();
+    MatchDao matchDao = new MatchDao();
 
     public void saveMatch(MatchModel matchModel) {
         try {
