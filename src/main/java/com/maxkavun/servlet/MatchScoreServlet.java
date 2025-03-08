@@ -47,7 +47,7 @@ public class MatchScoreServlet extends HttpServlet {
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_NOT_FOUND, e.getMessage());
 
         } catch (IllegalArgumentException e) {
-            log.error("Invalid UUID format: {}", matchUUID, e);  //TODO подумать на счет этого исключения , возможно оно лишнее , или придумать свое
+            log.error("Invalid UUID format: {}", matchUUID, e);
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid UUID format");
         }
     }
@@ -84,6 +84,7 @@ public class MatchScoreServlet extends HttpServlet {
 
             if (matchModel.getScore().isMatchFinished()) {
                 finishedMatchesPersistenceService.saveMatch(matchModel);
+                ongoingMatchesService.removeMatch(matchModel.getMatchId());
             }
 
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_OK, matchModel);
