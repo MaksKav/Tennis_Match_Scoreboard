@@ -1,6 +1,7 @@
 package com.maxkavun.service;
 
 import com.maxkavun.dao.PlayerDao;
+import com.maxkavun.exception.MatchCreationException;
 import com.maxkavun.model.MatchModel;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
@@ -41,8 +42,9 @@ public class OngoingMatchesService {
             log.info("Match created successfully: {}", matchModel);
             ongoingMatches.put(uuid, matchModel);
             log.info("Match added to ongoing matches successfully");
-        } catch (Exception e) {                                             //TODO  придумать тут какое то кастомное исключение
+        } catch (Exception e) {
             log.error("Error while creating match");
+            throw new MatchCreationException("Failed to create match for players: " + player1Name + " vs " + player2Name, e);
         }
         return uuid;
     }
