@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.maxkavun.exception.MatchNotFoundException;
 import com.maxkavun.model.MatchModel;
 import com.maxkavun.model.request.MatchScoreRequest;
+import com.maxkavun.service.FinishedMatchesPersistenceService;
 import com.maxkavun.service.MatchScoreCalculationService;
 import com.maxkavun.service.OngoingMatchesService;
 import com.maxkavun.util.GsonSingleton;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.UUID;
@@ -21,8 +23,9 @@ import java.util.UUID;
 @Slf4j
 @WebServlet("/match-score")
 public class MatchScoreServlet extends HttpServlet {
-    private final OngoingMatchesService ongoingMatchesService = OngoingMatchesService.getInstance() ;
+    private final OngoingMatchesService ongoingMatchesService = OngoingMatchesService.getInstance();
     private final MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
+    private final FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,20 +70,24 @@ public class MatchScoreServlet extends HttpServlet {
         UUID matchId = UUID.fromString(matchRequest.matchUuid());
 
         if (isPlayerNumberInvalid(playerNumberParam)) {
-            ResponseUtil.sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid player number"); // TODO возможно это нужно будет удалить по ненадобности подобной проверки
+            ResponseUtil.sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid player number");
+            return;      // TODO возможно это нужно будет удалить по ненадобности подобной проверки
         }
-        int playerNumber = Integer.parseInt(playerNumberParam);
+
+
         try {
             MatchModel matchModel = findMatchById(matchId);
-            int player1Number = 1;
-            if (playerNumber == player1Number) {
-                matchScoreCalculationService.addPointToPlayer1(matchModel.getScore());
-            } else {
-                matchScoreCalculationService.addPointToPlayer2(matchModel.getScore());
+            switch (playerNumberParam) {
+                case "1" -> matchScoreCalculationService.addPointToPlayer1(matchModel.getScore());
+                case "2" -> matchScoreCalculationService.addPointToPlayer2(matchModel.getScore());
+            }
+
+            if (matchModel.getScore().isMatchFinished()) {
+                finishedMatchesPersistenceService.saveMatch(matchModel);
             }
 
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_OK, matchModel);
-        }catch (MatchNotFoundException e) {
+        } catch (MatchNotFoundException e) {
             log.error("Match with UUID: {} NOT FOUND", matchId);
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_NOT_FOUND, e.getMessage());
         }
@@ -96,4 +103,5 @@ public class MatchScoreServlet extends HttpServlet {
     private boolean isPlayerNumberInvalid(String playerNumber) {
         return playerNumber == null || (!playerNumber.equals("1") && !playerNumber.equals("2"));
     }
+
 }
