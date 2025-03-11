@@ -2,7 +2,7 @@ package com.maxkavun.service;
 
 import com.maxkavun.model.MatchScoreModel;
 
-public class MatchScoreCalculationService {
+public class StandardMatchScoreCalculationService {
     private static final String INITIAL_SCORE = "0";
     private static final String FIRST_POINT_SCORE = "15";
     private static final String SECOND_POINT_SCORE = "30";

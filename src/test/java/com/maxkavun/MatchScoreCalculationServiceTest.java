@@ -1,18 +1,18 @@
 package com.maxkavun;
 
 import com.maxkavun.model.MatchScoreModel;
-import com.maxkavun.service.MatchScoreCalculationService;
+import com.maxkavun.service.StandardMatchScoreCalculationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchScoreCalculationServiceTest {
-    private MatchScoreCalculationService service;
+    private StandardMatchScoreCalculationService service;
 
     @BeforeEach
     void setUp() {
-        service = new MatchScoreCalculationService();
+        service = new StandardMatchScoreCalculationService();
     }
 
     @Test

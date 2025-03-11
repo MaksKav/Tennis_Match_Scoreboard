@@ -5,7 +5,7 @@ import com.maxkavun.exception.MatchNotFoundException;
 import com.maxkavun.model.MatchModel;
 import com.maxkavun.model.request.MatchScoreRequest;
 import com.maxkavun.service.FinishedMatchesPersistenceService;
-import com.maxkavun.service.MatchScoreCalculationService;
+import com.maxkavun.service.StandardMatchScoreCalculationService;
 import com.maxkavun.service.OngoingMatchesService;
 import com.maxkavun.util.GsonSingleton;
 import com.maxkavun.util.ResponseUtil;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @WebServlet("/match-score")
 public class MatchScoreServlet extends HttpServlet {
     private final OngoingMatchesService ongoingMatchesService = OngoingMatchesService.getInstance();
-    private final MatchScoreCalculationService matchScoreCalculationService = new MatchScoreCalculationService();
+    private final StandardMatchScoreCalculationService matchScoreCalculationService = new StandardMatchScoreCalculationService();
     private final FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
 
     @Override
