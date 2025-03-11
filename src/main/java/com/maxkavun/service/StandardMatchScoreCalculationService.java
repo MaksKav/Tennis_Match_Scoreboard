@@ -2,7 +2,7 @@ package com.maxkavun.service;
 
 import com.maxkavun.model.MatchScoreModel;
 
-public class StandardMatchScoreCalculationService {
+public class StandardMatchScoreCalculationService implements MatchScoreCalculationService {
     private static final String INITIAL_SCORE = "0";
     private static final String FIRST_POINT_SCORE = "15";
     private static final String SECOND_POINT_SCORE = "30";
@@ -14,6 +14,7 @@ public class StandardMatchScoreCalculationService {
     private static final int INITIAL_VALUE = 0;
     private static final int ONE_POINT = 1 ;
 
+    @Override
     public void addPointToPlayer1(MatchScoreModel scoreModel) {
         if (scoreModel.isTiebreak()) {
             handleTiebreakPoint(scoreModel, true);
@@ -22,6 +23,7 @@ public class StandardMatchScoreCalculationService {
         }
     }
 
+    @Override
     public void addPointToPlayer2(MatchScoreModel scoreModel) {
         if (scoreModel.isTiebreak()) {
             handleTiebreakPoint(scoreModel, false);
