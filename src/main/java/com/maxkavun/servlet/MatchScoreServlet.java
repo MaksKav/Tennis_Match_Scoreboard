@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.maxkavun.exception.MatchNotFoundException;
 import com.maxkavun.model.MatchModel;
 import com.maxkavun.model.request.MatchScoreRequest;
-import com.maxkavun.service.FinishedMatchesPersistenceService;
+import com.maxkavun.service.FinishedMatchesService;
 import com.maxkavun.service.StandardMatchScoreCalculationService;
 import com.maxkavun.service.OngoingMatchesService;
 import com.maxkavun.util.GsonSingleton;
@@ -25,7 +25,7 @@ import java.util.UUID;
 public class MatchScoreServlet extends HttpServlet {
     private final OngoingMatchesService ongoingMatchesService = OngoingMatchesService.getInstance();
     private final StandardMatchScoreCalculationService matchScoreCalculationService = new StandardMatchScoreCalculationService();
-    private final FinishedMatchesPersistenceService finishedMatchesPersistenceService = new FinishedMatchesPersistenceService();
+    private final FinishedMatchesService finishedMatchesService = new FinishedMatchesService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,7 +71,7 @@ public class MatchScoreServlet extends HttpServlet {
 
         if (isPlayerNumberInvalid(playerNumberParam)) {
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid player number");
-            return;      // TODO возможно это нужно будет удалить по ненадобности подобной проверки
+            return;
         }
 
 
@@ -83,7 +83,7 @@ public class MatchScoreServlet extends HttpServlet {
             }
 
             if (matchModel.getScore().isMatchFinished()) {
-                finishedMatchesPersistenceService.saveMatch(matchModel);
+                finishedMatchesService.saveMatch(matchModel);
                 ongoingMatchesService.removeMatch(matchModel.getMatchId());
             }
 
