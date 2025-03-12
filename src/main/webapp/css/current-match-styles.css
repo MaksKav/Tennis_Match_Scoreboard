@@ -1,0 +1,248 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+}
+
+h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    position: relative;
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: #3498db;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.scoreboard {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.header {
+    display: flex;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e0e0e0;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.player-row {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.player-row:last-child {
+    border-bottom: none;
+}
+
+.column {
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.player {
+    flex: 3;
+    font-weight: 500;
+}
+
+.sets, .games, .points {
+    flex: 1;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.action {
+    flex: 2;
+    justify-content: center;
+}
+
+.score-button {
+    padding: 0.8rem 2rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.score-button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.score-button:active {
+    transform: translateY(0);
+}
+
+.match-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.end-button {
+    padding: 0.8rem 2rem;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.end-button:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.end-button:active {
+    transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+        width: 95%;
+    }
+
+    .column {
+        padding: 0.8rem;
+    }
+
+    .sets, .games, .points {
+        font-size: 1.2rem;
+    }
+
+    .player {
+        font-size: 0.9rem;
+    }
+
+    .score-button, .end-button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .column {
+        padding: 0.6rem;
+    }
+
+    .sets, .games, .points {
+        font-size: 1rem;
+    }
+
+    .player {
+        font-size: 0.8rem;
+    }
+}
+
+/* Стиль для сообщений об ошибках */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+    animation: fadeIn 0.3s ease;
+}
+
+.match-result {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-left: 4px solid #28a745;
+    animation: fadeIn 0.3s ease;
+}
+
+.tiebreak-message {
+    background-color: #EEE8AA;
+    color: #155724;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-left: 4px solid #28a745;
+    animation: fadeIn 0.3s ease;
+}
+/* Стиль для отключенных кнопок */
+.score-button.disabled {
+    background-color: #6c757d;
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Стили для индикатора загрузки */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(52, 152, 219, 0.3);
+    border-radius: 50%;
+    border-top-color: #3498db;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
