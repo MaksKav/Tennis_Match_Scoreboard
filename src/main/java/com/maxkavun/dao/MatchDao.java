@@ -7,28 +7,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
-public class MatchDao {
+public class MatchDao extends AbstractDao <MatchEntity , MatchPersistenceException> {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-    public void save(MatchEntity matchEntity) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.persist(matchEntity);
-            session.getTransaction().commit();
+    public MatchDao() {
+        super(MatchEntity.class , MatchPersistenceException.class);
+    }
+
+    public List<MatchEntity> getMatchesByParams(int page, int size) {
+        List<MatchEntity> matches = Collections.emptyList();
+        try (Session session = sessionFactory.openSession()){
+            Query<MatchEntity> query = session.createQuery("FROM MatchEntity" , MatchEntity.class);
+            query.setFirstResult((page - 1) * size);
+            query.setMaxResults(size);
+
+            matches = query.list();
+            return matches;
         }catch (HibernateException exception){
-            log.error("Error occurred while saving match", exception);
-            if (session != null && session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            throw new MatchPersistenceException("Failed to save MatchEntity", exception);
-        }finally {
-            if (session != null){
-                session.close();
-            }
+            log.error("Error fetching matches for page {} with size {}", page, size, exception);
+            throw  new MatchPersistenceException("Failed to fetch matches from database", exception);
         }
     }
 }

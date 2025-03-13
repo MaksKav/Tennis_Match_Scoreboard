@@ -11,15 +11,18 @@ import org.hibernate.SessionFactory;
 import java.util.Optional;
 
 @Slf4j
-public class PlayerDao {
+public class PlayerDao extends AbstractDao<PlayerEntity, PlayerPersistenceException> {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
+    public PlayerDao() {
+        super(PlayerEntity.class, PlayerPersistenceException.class);
+    }
 
     public Optional<PlayerEntity> findByName(String name) {
         Optional<PlayerEntity> playerEntity = Optional.empty();
         try (Session session = sessionFactory.openSession()) {
             playerEntity = Optional.ofNullable(session
-                    .createQuery("select p from PlayerEntity p where p.name = :name", PlayerEntity.class)
+                    .createQuery(" select p from PlayerEntity p where p.name = :name", PlayerEntity.class)
                     .setParameter("name", name)
                     .getSingleResultOrNull());
         } catch (HibernateException exception) {
@@ -38,31 +41,4 @@ public class PlayerDao {
                     return new PlayerPersistenceException("Failed to find ID from name " + name);
                 });
     }
-
-
-    public void save(String playerName) {
-        Session session = null;
-        try {
-            PlayerEntity playerEntity = PlayerEntity.builder()
-                    .name(playerName)
-                    .build();
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.persist(playerEntity);
-            session.getTransaction().commit();
-        } catch (HibernateException exception) {
-            log.error("Error occurred while saving player", exception);
-
-            if (session != null && session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            throw new PlayerPersistenceException("Failed to save PlayerEntity", exception);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
-
 }

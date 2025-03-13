@@ -1,6 +1,7 @@
 package com.maxkavun.service;
 
 import com.maxkavun.dao.PlayerDao;
+import com.maxkavun.entity.PlayerEntity;
 import com.maxkavun.exception.PlayerPersistenceException;
 import com.maxkavun.exception.PlayerServiceException;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class NewPlayersService {
 
     private void createPlayerIfNotExists(String playerName) {
         if (playerDao.findByName(playerName).isEmpty()) {
-            playerDao.save(playerName);
+            playerDao.save(PlayerEntity.builder().name(playerName).build());
         }
     }
 }
