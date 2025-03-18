@@ -105,3 +105,12 @@ button:active {
         padding: 0.7rem;
     }
 }
+
+.error-container {
+    color: #000000;
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #ffaa8c;
+    margin-bottom: 5px;
+}

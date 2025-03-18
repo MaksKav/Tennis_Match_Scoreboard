@@ -7,8 +7,20 @@
     <link rel="stylesheet" href="/Tennis_Match_Scoreboard/css/new-match-styles.css" type="text/css">
 </head>
 <body>
+<div id="header-container"></div>
+
+<script>
+    fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('header-container').innerHTML = data;
+    })
+</script>
+
 <div class="container">
     <h2>Creating a new match</h2>
+    <div id="error-message" class="error-container" style="display: none;"></div>
+
     <form id="newMatchForm">
         <label for="player1">Player 1:</label>
         <input type="text" id="player1" name="player1" required>

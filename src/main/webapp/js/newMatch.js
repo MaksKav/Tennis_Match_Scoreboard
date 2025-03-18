@@ -15,7 +15,10 @@ document.getElementById("newMatchForm").addEventListener("submit", function (eve
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to create match');
+                return response.text().then(errorText => {
+                    const cleanedError = errorText.replace(/\"/g, '');
+                    throw new Error(cleanedError);
+                });
             }
             return response.json();
         })
@@ -24,6 +27,13 @@ document.getElementById("newMatchForm").addEventListener("submit", function (eve
             window.location.href=`/Tennis_Match_Scoreboard/match-score.html?uuid=${matchId}`;
         })
         .catch(error => {
-            document.getElementById('message').innerHTML = `<p>Error: ${error.message}</p>`;
+            showError(error.message);
         });
 });
+
+function showError(message) {
+    const errorDiv = document.getElementById("error-message");
+    errorDiv.innerHTML = `<p class="error">${message}</p>`;
+    errorDiv.style.display = "block";
+}
+
