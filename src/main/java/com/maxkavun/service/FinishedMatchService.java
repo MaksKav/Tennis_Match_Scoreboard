@@ -2,17 +2,20 @@ package com.maxkavun.service;
 
 import com.maxkavun.dao.MatchDao;
 import com.maxkavun.dao.PlayerDao;
+import com.maxkavun.dto.FinishedMatchDto;
+import com.maxkavun.dto.FinishedMatchResponse;
 import com.maxkavun.entity.MatchEntity;
 import com.maxkavun.entity.PlayerEntity;
+import com.maxkavun.exception.FinishedMatchServiceException;
 import com.maxkavun.exception.MatchPersistenceException;
 import com.maxkavun.exception.PlayerPersistenceException;
 import com.maxkavun.model.MatchModel;
 import lombok.extern.slf4j.Slf4j;
-
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class FinishedMatchesService {
+public class FinishedMatchService {
     PlayerDao playerDao = new PlayerDao();
     MatchDao matchDao = new MatchDao();
 
@@ -32,6 +35,26 @@ public class FinishedMatchesService {
             log.error("Error saving match: {}", matchModel, exception);
         }
     }
+
+    public FinishedMatchResponse getFinishedMatches(int page, int size) {
+        return getFinishedMatchesByPlayerName(page, size, null); // вызов с null
+    }
+
+    public FinishedMatchResponse getFinishedMatchesByPlayerName(int page, int size, String playerName) {
+        try {
+            int total = matchDao.getTotalMatches(playerName);
+            List<FinishedMatchDto>  dtos =  matchDao.getMatchesByParams(page, size, playerName).stream()
+                    .map(matchEntity -> new FinishedMatchDto(
+                            matchEntity.getPlayer1().getName(),
+                            matchEntity.getPlayer2().getName(),
+                            matchEntity.getWinner().getName()))
+                    .toList();
+            return new FinishedMatchResponse(dtos , total);
+        } catch (MatchPersistenceException exception) {
+            throw new FinishedMatchServiceException("Failed to get finished matches with name: " + playerName, exception);
+        }
+    }
+
 
     private PlayerEntity getPlayerByName(String playerName) {
         Optional<PlayerEntity> playerOptional = playerDao.findByName(playerName);
