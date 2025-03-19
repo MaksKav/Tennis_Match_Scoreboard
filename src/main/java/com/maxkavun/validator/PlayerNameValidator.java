@@ -15,4 +15,8 @@ public class PlayerNameValidator {
     public boolean areNamesSame(String player1Name, String player2Name) {
         return player1Name.equalsIgnoreCase(player2Name);
     }
+
+    public String formatName(String name) {
+        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+    }
 }

@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.UUID;
 
@@ -45,18 +46,21 @@ public class NewMatchServlet extends HttpServlet {
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Players names must be different");
             return;
         }
+        player1Name = playerNameValidator.formatName(player1Name);
+        player2Name = playerNameValidator.formatName(player2Name);
+
+
         try {
             newMatchService.createPlayersIfNotExists(player1Name, player2Name);
             UUID matchId = ongoingMatchesService.getOrCreateMatchId(player1Name, player2Name);
-            ResponseUtil.sendResponse(response , HttpServletResponse.SC_OK, new MatchIdDto(matchId));
+            ResponseUtil.sendResponse(response, HttpServletResponse.SC_OK, new MatchIdDto(matchId));
 
         } catch (PlayerServiceException exception) {
             log.error("Error processing new match request", exception);
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing the match");
-        } catch (MatchNotFoundException exception){
-            log.error("Match for players {} and {} not found" , player1Name, player2Name);
+        } catch (MatchNotFoundException exception) {
+            log.error("Match for players {} and {} not found", player1Name, player2Name);
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_NOT_FOUND, "Match for players " + player1Name + " and " + player2Name + " not found");
         }
     }
-
 }
