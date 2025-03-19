@@ -14,6 +14,9 @@ public class NewPlayerService {
 
     public void createPlayersIfNotExists(String player1Name , String player2Name) {
         try {
+            player1Name = formatName(player1Name);
+            player2Name = formatName(player2Name);
+
             createPlayerIfNotExists(player1Name);
             createPlayerIfNotExists(player2Name);
             log.info("Players created successfully in service");
@@ -26,5 +29,12 @@ public class NewPlayerService {
         if (playerDao.findByName(playerName).isEmpty()) {
             playerDao.save(PlayerEntity.builder().name(playerName).build());
         }
+    }
+
+    private String formatName(String name) {
+        if (name == null || name.isBlank()) {
+            return name;
+        }
+        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 }
