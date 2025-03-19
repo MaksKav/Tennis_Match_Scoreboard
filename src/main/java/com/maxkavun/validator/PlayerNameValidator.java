@@ -13,6 +13,6 @@ public class PlayerNameValidator {
     }
 
     public boolean areNamesSame(String player1Name, String player2Name) {
-        return player1Name.equals(player2Name);
+        return player1Name.equalsIgnoreCase(player2Name);
     }
 }
