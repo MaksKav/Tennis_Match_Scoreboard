@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter("/*")
+@WebFilter("/api/*")
 public class RequestResponseEncodingFilter implements Filter {
 
     @Override
