@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.maxkavun.exception.MatchNotFoundException;
 import com.maxkavun.model.MatchModel;
 import com.maxkavun.model.request.MatchScoreRequest;
-import com.maxkavun.service.FinishedMatchesService;
+import com.maxkavun.service.FinishedMatchService;
 import com.maxkavun.service.StandardMatchScoreCalculationService;
-import com.maxkavun.service.OngoingMatchesService;
+import com.maxkavun.service.OngoingMatchService;
 import com.maxkavun.util.GsonSingleton;
 import com.maxkavun.util.ResponseUtil;
 import jakarta.servlet.ServletException;
@@ -21,11 +21,11 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
-@WebServlet("/match-score")
+@WebServlet("/api/match-score")
 public class MatchScoreServlet extends HttpServlet {
-    private final OngoingMatchesService ongoingMatchesService = OngoingMatchesService.getInstance();
+    private final OngoingMatchService ongoingMatchesService = OngoingMatchService.getInstance();
     private final StandardMatchScoreCalculationService matchScoreCalculationService = new StandardMatchScoreCalculationService();
-    private final FinishedMatchesService finishedMatchesService = new FinishedMatchesService();
+    private final FinishedMatchService finishedMatchesService = new FinishedMatchService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,6 +36,7 @@ public class MatchScoreServlet extends HttpServlet {
             ResponseUtil.sendResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Missing required parameter 'uuid'");
             return;
         }
+
         try {
             UUID matchId = UUID.fromString(matchUUID);
             MatchModel matchModel = findMatchById(matchId);
@@ -54,8 +55,6 @@ public class MatchScoreServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("application/json");
-
         StringBuilder requestBody = new StringBuilder();
         try (BufferedReader reader = request.getReader()) {
             String line;
