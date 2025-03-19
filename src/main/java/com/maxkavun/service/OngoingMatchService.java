@@ -3,6 +3,7 @@ package com.maxkavun.service;
 import com.maxkavun.dao.PlayerDao;
 import com.maxkavun.exception.MatchCreationException;
 import com.maxkavun.model.MatchModel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.Optional;
@@ -10,14 +11,18 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-public class OngoingMatchesService {
-    private static final OngoingMatchesService INSTANCE = new OngoingMatchesService();
+public class OngoingMatchService {
+    private static final long MATCH_TIMEOUT = 30 * 60 * 1000; // 30 min
+
+    @Getter
     private static final Map<UUID, MatchModel> ongoingMatches = new ConcurrentHashMap<>();
+    private static final OngoingMatchService INSTANCE = new OngoingMatchService();
+
     private final PlayerDao playerDao = new PlayerDao();
 
-    private OngoingMatchesService() {}
+    private OngoingMatchService() {}
 
-    public static OngoingMatchesService getInstance (){
+    public static OngoingMatchService getInstance() {
         return INSTANCE;
     }
 
@@ -60,4 +65,13 @@ public class OngoingMatchesService {
         }
     }
 
+    public void checkAndResetMatchIfNeeded(UUID matchId) {
+        var match = getMatch(matchId);
+        if (match.isPresent()) {
+            long elapsedTime = System.currentTimeMillis() - match.get().getStartTime();
+            if (elapsedTime > MATCH_TIMEOUT) {
+                removeMatch(matchId);
+            }
+        }
+    }
 }
