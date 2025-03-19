@@ -1,8 +1,6 @@
-// Константы и конфигурация
-const API_URL = '/Tennis_Match_Scoreboard/match-score';
+const API_URL = '/Tennis_Match_Scoreboard/api/match-score';
 const REFRESH_INTERVAL = 3000;
 
-// DOM элементы
 let player1Row;
 let player2Row;
 let uuid;
@@ -144,38 +142,14 @@ function addPoint(playerId) {
         });
 }
 
-// Отправка запроса на завершение матча
-function endMatch() {
-    fetch(`${API_URL}/${uuid}/end`, {
-        method: 'POST'
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            window.location.href = '/matches'; // Перенаправление на страницу со списком матчей
-        })
-        .catch(error => {
-            console.error('Error ending match:', error);
-            showError('Failed to end match. Please try again.');
-        });
-}
-
-// Показ сообщения об ошибке
 function showError(message) {
-    // Создаем элемент для отображения ошибки
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
 
-    // Добавляем к контейнеру
     const container = document.querySelector('.container');
     container.prepend(errorDiv);
 
-    // Удаляем сообщение через 5 секунд
     setTimeout(() => {
         errorDiv.remove();
     }, 5000);
@@ -214,7 +188,6 @@ function showMatchResult(winnerName) {
     container.appendChild(resultDiv);
 }
 
-// Отключение кнопок начисления очков
 function disableScoreButtons() {
     document.querySelectorAll('.score-button').forEach(button => {
         button.disabled = true;
