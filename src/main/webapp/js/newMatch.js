@@ -8,7 +8,7 @@ document.getElementById("newMatchForm").addEventListener("submit", function (eve
     formData.append('player1', player1);
     formData.append('player2', player2);
 
-    fetch('/Tennis_Match_Scoreboard/new-match', {
+    fetch('/Tennis_Match_Scoreboard/api/new-match', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: formData.toString()
