@@ -43,7 +43,7 @@ public class OngoingMatchService {
         try {
             Long player1Id = playerDao.getIdByName(player1Name);
             Long player2Id = playerDao.getIdByName(player2Name);
-            MatchModel matchModel = MatchModel.builder().matchId(uuid).player1Name(player1Name).player2Name(player2Name).player1Id(player1Id).player2Id(player2Id).build();
+            MatchModel matchModel = MatchModel.builder().matchId(uuid).player1Name(player1Name).player2Name(player2Name).player1Id(player1Id).player2Id(player2Id).startTime(System.currentTimeMillis()).build();
             log.info("Match created successfully: {}", matchModel);
             ongoingMatches.put(uuid, matchModel);
             log.info("Match added to ongoing matches successfully");
