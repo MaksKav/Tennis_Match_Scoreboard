@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mat ches</title>
+    <link rel="stylesheet" href="/Tennis_Match_Scoreboard/css/finished-match-styles.css" type="text/css">
+</head>
+<body>
+<div id="header-container"></div>
+
+<script>
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+        })
+</script>
+
+<h1>Matches</h1>
+
+<div class="filter-container">
+    <input type="text" class="filter-input" placeholder="Filter by name">
+    <button class="reset-button">Reset Filter</button>
+</div>
+
+<table class="matches-table">
+    <thead>
+    <tr class="table-header">
+        <th>Player One</th>
+        <th>Player Two</th>
+        <th>Winner</th>
+    </tr>
+    </thead>
+    <tbody id="matches-body">
+    <tr>
+        <td colspan="3" class="loader">Data loaded ...</td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="pagination" id="pagination">
+</div>
+<script src="js/finishedMatch.js" defer></script>
+</body>
+</html>
