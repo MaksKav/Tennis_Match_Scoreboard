@@ -21,7 +21,7 @@ public class HibernateUtil {
                     .addAnnotatedClass(PlayerEntity.class)
                     .addAnnotatedClass(MatchEntity.class)
                     .configure("hibernate.cfg.xml").buildSessionFactory();
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             log.error("Failed to build Hibernate SessionFactory", ex);
             throw new HibernateInitializationException("Could not initialize Hibernate SessionFactory", ex);
         }
