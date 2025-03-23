@@ -77,29 +77,6 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
         checkSetEnd(scoreModel);
     }
 
-    private void checkSetEnd(MatchScoreModel scoreModel) {
-        if (scoreModel.getPlayer1GamesInSet() == GAMES_IN_SET_TO_WIN && scoreModel.getPlayer2GamesInSet() == GAMES_IN_SET_TO_WIN) {
-            scoreModel.setTiebreak(true);
-            return;
-        }
-
-        if (scoreModel.getPlayer1GamesInSet() >= GAMES_IN_SET_TO_WIN && scoreModel.getPlayer1GamesInSet() >= scoreModel.getPlayer2GamesInSet() + DIFFERENCE_TO_WIN) {
-            scoreModel.setPlayer1Sets(scoreModel.getPlayer1Sets() + ONE_POINT);
-            if (scoreModel.isMatchFinished() && scoreModel.getPlayer1Sets() >= 2){
-                int firstPlayer = 1 ;
-                scoreModel.setWinner(firstPlayer);
-            }
-            resetScore(scoreModel);
-        } else if (scoreModel.getPlayer2GamesInSet() >= GAMES_IN_SET_TO_WIN && scoreModel.getPlayer2GamesInSet() >= scoreModel.getPlayer1GamesInSet() + DIFFERENCE_TO_WIN) {
-            scoreModel.setPlayer2Sets(scoreModel.getPlayer2Sets() + ONE_POINT);
-            if (scoreModel.isMatchFinished() && scoreModel.getPlayer2Sets() >= 2){
-                int secondPlayer = 2 ;
-                scoreModel.setWinner(secondPlayer);
-            }
-            resetScore(scoreModel);
-        }
-    }
-
     private void handleTiebreakPoint(MatchScoreModel scoreModel, boolean isPlayer1) {
         if (isPlayer1) {
             scoreModel.setPlayer1TiebreakPoints(scoreModel.getPlayer1TiebreakPoints() + ONE_POINT);
@@ -113,14 +90,47 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
 
         if (scoreModel.getPlayer1TiebreakPoints() >= TIEBREAK_WIN_POINTS && scoreModel.getPlayer1TiebreakPoints() >= scoreModel.getPlayer2TiebreakPoints() + DIFFERENCE_TO_WIN) {
             scoreModel.setPlayer1Sets(scoreModel.getPlayer1Sets() + ONE_POINT);
-            resetScore(scoreModel);
+            resetScoreAfterTiebreak(scoreModel);
         } else if (scoreModel.getPlayer2TiebreakPoints() >= TIEBREAK_WIN_POINTS && scoreModel.getPlayer2TiebreakPoints() >= scoreModel.getPlayer1TiebreakPoints() + DIFFERENCE_TO_WIN) {
             scoreModel.setPlayer2Sets(scoreModel.getPlayer2Sets() + ONE_POINT);
-            resetScore(scoreModel);
+            resetScoreAfterTiebreak(scoreModel);
+        }
+
+        if(scoreModel.isMatchFinished()){
+            setWinnerIfMatchFinished(scoreModel);
         }
     }
 
-    private void resetScore(MatchScoreModel scoreModel) {
+    private void checkSetEnd(MatchScoreModel scoreModel) {
+        if (scoreModel.getPlayer1GamesInSet() == GAMES_IN_SET_TO_WIN && scoreModel.getPlayer2GamesInSet() == GAMES_IN_SET_TO_WIN) {
+            scoreModel.setTiebreak(true);
+            return;
+        }
+
+        if (scoreModel.getPlayer1GamesInSet() >= GAMES_IN_SET_TO_WIN && scoreModel.getPlayer1GamesInSet() >= scoreModel.getPlayer2GamesInSet() + DIFFERENCE_TO_WIN) {
+            scoreModel.setPlayer1Sets(scoreModel.getPlayer1Sets() + ONE_POINT);
+            resetScoreAfterTiebreak(scoreModel);
+        } else if (scoreModel.getPlayer2GamesInSet() >= GAMES_IN_SET_TO_WIN && scoreModel.getPlayer2GamesInSet() >= scoreModel.getPlayer1GamesInSet() + DIFFERENCE_TO_WIN) {
+            scoreModel.setPlayer2Sets(scoreModel.getPlayer2Sets() + ONE_POINT);
+            resetScoreAfterTiebreak(scoreModel);
+        }
+
+        if (scoreModel.isMatchFinished()){
+            setWinnerIfMatchFinished(scoreModel);
+        }
+    }
+
+    private void setWinnerIfMatchFinished(MatchScoreModel scoreModel){
+        if (scoreModel.getPlayer1Sets() >= 2) {
+            int firstPlayer = 1 ;
+            scoreModel.setWinner(firstPlayer);
+        } else if (scoreModel.getPlayer2Sets() >= 2) {
+            int secondPlayer = 2 ;
+            scoreModel.setWinner(secondPlayer);
+        }
+    }
+
+    private void resetScoreAfterTiebreak(MatchScoreModel scoreModel) {
         scoreModel.setTiebreak(false);
         scoreModel.setPlayer1GamesInSet(INITIAL_VALUE);
         scoreModel.setPlayer2GamesInSet(INITIAL_VALUE);
