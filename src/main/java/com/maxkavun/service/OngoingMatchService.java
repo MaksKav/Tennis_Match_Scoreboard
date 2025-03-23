@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class OngoingMatchService {
+
     private static final long MATCH_TIMEOUT = 30 * 60 * 1000; // 30 min
 
     @Getter

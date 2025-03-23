@@ -9,6 +9,7 @@ import org.hibernate.cfg.Configuration;
 
 @Slf4j
 public class HibernateUtil {
+
     private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
 
     private HibernateUtil() {

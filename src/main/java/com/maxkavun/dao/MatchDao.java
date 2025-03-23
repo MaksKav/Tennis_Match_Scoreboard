@@ -20,6 +20,7 @@ public class MatchDao extends AbstractDao<MatchEntity, MatchPersistenceException
         super(MatchEntity.class, MatchPersistenceException.class);
     }
 
+
     /**
      * Retrieves a paginated list of matches, optionally filtered by player name.
      *

@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 @Slf4j
 public class MatchMonitor {
+
     private static final long CHECK_INTERVAL = 60 * 1000; // 1 min
     private final OngoingMatchService ongoingMatchService;
     private final ScheduledExecutorService scheduler;

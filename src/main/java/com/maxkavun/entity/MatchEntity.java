@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "Matches")
 @Data
 public class MatchEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

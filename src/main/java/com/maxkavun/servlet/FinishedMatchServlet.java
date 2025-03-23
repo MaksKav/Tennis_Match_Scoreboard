@@ -18,6 +18,7 @@ import java.io.IOException;
 @Slf4j
 @WebServlet("/api/matches")
 public class FinishedMatchServlet extends HttpServlet {
+
     FinishedMatchService finishedMatchService = new FinishedMatchService();
     PlayerNameValidator nameValidator = new PlayerNameValidator();
 

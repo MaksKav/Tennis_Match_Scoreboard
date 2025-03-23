@@ -7,6 +7,7 @@ import java.io.IOException;
 
 @Slf4j
 public class ResponseUtil {
+
     private static final Gson gson = GsonSingleton.INSTANCE.getGson();
 
     private ResponseUtil() {

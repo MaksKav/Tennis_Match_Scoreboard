@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @WebListener
 public class MatchLifecycleListener implements ServletContextListener {
-
     private OngoingMatchService matchService;
     private MatchMonitor matchMonitor;
 

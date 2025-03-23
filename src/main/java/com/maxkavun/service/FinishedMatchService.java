@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Slf4j
 public class FinishedMatchService {
+
     PlayerDao playerDao = new PlayerDao();
     MatchDao matchDao = new MatchDao();
 
@@ -30,14 +31,14 @@ public class FinishedMatchService {
             log.info("Match saved successfully with winner: {}", matchModel.getScore().getWinner() == 1 ? player1.getName() : player2.getName());
 
         } catch (PlayerPersistenceException exception) {
-            log.error("Error finding player for match: {}", matchModel, exception);
+                log.error("Error finding player for match: {}", matchModel, exception); // FIXME прокинуть исключение и обработать в сервлете
         } catch (MatchPersistenceException exception) {
             log.error("Error saving match: {}", matchModel, exception);
         }
     }
 
     public FinishedMatchResponse getFinishedMatches(int page, int size) {
-        return getFinishedMatchesByPlayerName(page, size, null); // вызов с null
+        return getFinishedMatchesByPlayerName(page, size, null);
     }
 
     public FinishedMatchResponse getFinishedMatchesByPlayerName(int page, int size, String playerName) {

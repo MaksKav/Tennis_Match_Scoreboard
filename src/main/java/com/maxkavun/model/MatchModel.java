@@ -1,7 +1,5 @@
 package com.maxkavun.model;
-
 import lombok.*;
-
 import java.util.UUID;
 
 @ToString

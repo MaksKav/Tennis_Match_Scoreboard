@@ -8,7 +8,6 @@ import java.io.IOException;
 
 @WebFilter("/api/*")
 public class RequestResponseEncodingFilter implements Filter {
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;

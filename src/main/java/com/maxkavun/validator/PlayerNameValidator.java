@@ -3,6 +3,7 @@ package com.maxkavun.validator;
 import java.util.regex.Pattern;
 
 public class PlayerNameValidator {
+
     private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z]{3,30}$");
 
     public boolean isInvalid(String playerName) {

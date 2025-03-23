@@ -23,6 +23,7 @@ import java.util.UUID;
 @Slf4j
 @WebServlet("/api/match-score")
 public class MatchScoreServlet extends HttpServlet {
+
     private final OngoingMatchService ongoingMatchesService = OngoingMatchService.getInstance();
     private final StandardMatchScoreCalculationService matchScoreCalculationService = new StandardMatchScoreCalculationService();
     private final FinishedMatchService finishedMatchesService = new FinishedMatchService();

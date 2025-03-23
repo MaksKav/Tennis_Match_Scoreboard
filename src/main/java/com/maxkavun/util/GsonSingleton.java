@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public enum GsonSingleton {
-
     INSTANCE;
 
     private final Gson gson;

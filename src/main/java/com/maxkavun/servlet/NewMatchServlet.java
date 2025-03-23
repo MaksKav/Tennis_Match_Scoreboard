@@ -21,6 +21,7 @@ import java.util.UUID;
 @Slf4j
 @WebServlet("/api/new-match")
 public class NewMatchServlet extends HttpServlet {
+
     private final NewPlayerService newMatchService = new NewPlayerService();
     private final OngoingMatchService ongoingMatchesService = OngoingMatchService.getInstance();
     private final PlayerNameValidator playerNameValidator = new PlayerNameValidator();

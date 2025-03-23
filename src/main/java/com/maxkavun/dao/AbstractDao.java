@@ -18,7 +18,6 @@ public abstract class AbstractDao<T , E extends AbstractDaoException> implements
         this.exceptionClass = exceptionClass;
     }
 
-
     @Override
     public void save(T entity) {
         Session session = null;

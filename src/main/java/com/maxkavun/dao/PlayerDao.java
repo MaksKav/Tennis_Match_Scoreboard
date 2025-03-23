@@ -18,6 +18,7 @@ public class PlayerDao extends AbstractDao<PlayerEntity, PlayerPersistenceExcept
         super(PlayerEntity.class, PlayerPersistenceException.class);
     }
 
+
     public Optional<PlayerEntity> findByName(String name) {
         Optional<PlayerEntity> playerEntity = Optional.empty();
         try (Session session = sessionFactory.openSession()) {

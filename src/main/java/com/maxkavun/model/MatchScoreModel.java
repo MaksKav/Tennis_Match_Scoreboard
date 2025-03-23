@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MatchScoreModel {
+
     private static final String INITIAL_SCORE = "0";
     private static final int SETS_TO_WIN = 2;
 
