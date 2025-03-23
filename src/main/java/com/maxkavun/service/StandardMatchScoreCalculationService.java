@@ -32,6 +32,7 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
         }
     }
 
+
     private void handleRegularPoint(MatchScoreModel scoreModel, boolean isPlayer1) {
         String player1Score = isPlayer1 ? scoreModel.getPlayer1GameScore() : scoreModel.getPlayer2GameScore();
         String player2Score = isPlayer1 ? scoreModel.getPlayer2GameScore() : scoreModel.getPlayer1GameScore();
@@ -64,6 +65,7 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
         }
     }
 
+
     private void handleGameWin(MatchScoreModel scoreModel, boolean isPlayer1) {
         scoreModel.setPlayer1GameScore(INITIAL_SCORE);
         scoreModel.setPlayer2GameScore(INITIAL_SCORE);
@@ -76,6 +78,7 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
 
         checkSetEnd(scoreModel);
     }
+
 
     private void handleTiebreakPoint(MatchScoreModel scoreModel, boolean isPlayer1) {
         if (isPlayer1) {
@@ -101,6 +104,7 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
         }
     }
 
+
     private void checkSetEnd(MatchScoreModel scoreModel) {
         if (scoreModel.getPlayer1GamesInSet() == GAMES_IN_SET_TO_WIN && scoreModel.getPlayer2GamesInSet() == GAMES_IN_SET_TO_WIN) {
             scoreModel.setTiebreak(true);
@@ -120,6 +124,7 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
         }
     }
 
+
     private void setWinnerIfMatchFinished(MatchScoreModel scoreModel){
         if (scoreModel.getPlayer1Sets() >= 2) {
             int firstPlayer = 1 ;
@@ -129,6 +134,7 @@ public class StandardMatchScoreCalculationService implements MatchScoreCalculati
             scoreModel.setWinner(secondPlayer);
         }
     }
+
 
     private void resetScoreAfterTiebreak(MatchScoreModel scoreModel) {
         scoreModel.setTiebreak(false);
